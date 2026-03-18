@@ -71,11 +71,20 @@ The system is strictly divided into three tiers of access:
 
 ### Running the Application
 
-To run both parts of the program simultaneously with a single command (PowerShell):
+To run both the backend and frontend simultaneously with a single command that automatically opens the app in your browser:
 
 ```powershell
-Start-Process node -ArgumentList "server.js" -WorkingDirectory "c:\NewDashboard\employee-dashboard\backend"; Start-Process cmd -ArgumentList "/c set BROWSER=none && npm.cmd start" -WorkingDirectory "c:\NewDashboard\employee-dashboard\frontend"
+npm run dev
 ```
+
+> [!NOTE]
+> Ensure you have run `npm install` in the root directory first. This will set up `concurrently` for running both services in a single terminal.
+
+### Manual Installation (If Not Automated)
+
+1. **Root Directory**: `npm install`
+2. **Backend**: `cd backend && npm install`
+3. **Frontend**: `cd frontend && npm install`
 
 ---
 
