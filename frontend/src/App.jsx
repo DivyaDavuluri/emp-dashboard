@@ -1,3 +1,13 @@
+
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import EmployeeDashboard from './pages/EmployeeDashboard';
+import ManagerDashboard from './pages/ManagerDashboard';
+import AdminPanel from './pages/AdminPanel';
+import LeaveTracker from './pages/LeaveTracker';
+import Layout from './components/Layout';
+import ErrorBoundary from './components/ErrorBoundary';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
@@ -5,7 +15,6 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 
-// Mock Pages (to be implemented next)
 import Login from '@/pages/Login';
 import Dashboard from '@/pages/Dashboard';
 import EmployeeDetails from '@/features/manager/pages/EmployeeDetails';
@@ -23,6 +32,59 @@ import PersonalReports from '@/features/employee/pages/PersonalReports';
 
 const App = () => {
   return (
+    <Router>
+      <ErrorBoundary>
+        <AnimatePresence mode="wait">
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            
+            <Route path="/" element={
+              <ProtectedRoute>
+                <Layout>
+                  <RoleBasedRedirect />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/dashboard" element={
+              <ProtectedRoute allowedRoles={['employee', 'manager', 'admin']}>
+                <Layout>
+                  <EmployeeDashboard />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/manager" element={
+              <ProtectedRoute allowedRoles={['manager', 'admin']}>
+                <Layout>
+                  <ManagerDashboard />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/admin" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Layout>
+                  <AdminPanel />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/leave" element={
+              <ProtectedRoute allowedRoles={['employee', 'manager', 'admin']}>
+                <Layout>
+                  <LeaveTracker />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            
+            {/* Default catch-all */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </AnimatePresence>
+      </ErrorBoundary>
+    </Router>
     <AuthProvider>
       <Router>
         <div className="app-container">
