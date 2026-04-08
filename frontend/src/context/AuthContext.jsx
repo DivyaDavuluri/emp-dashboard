@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       if (!window.navigator.onLine) {
         return { success: false, message: 'No internet connection detected.' };
       }
-      return { success: false, message: 'Backend server at port 3001 is unreachable. Please ensure the server is running.' };
+      return { success: false, message: 'Backend server is unreachable. Please ensure the API is operational.' };
     }
   };
 

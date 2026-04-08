@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getUsers } from '@/services/usersService';
 import { Wallet, Plus, Search, Calendar, User, Download } from 'lucide-react';
+import { API_BASE } from '@/services/apiClient';
 
 const SalaryManagement = () => {
     const [users, setUsers] = useState([]);
@@ -22,7 +23,7 @@ const SalaryManagement = () => {
             const usersData = await getUsers();
             setUsers(usersData);
 
-            const res = await fetch('/api/salary/all', {
+            const res = await fetch(`${API_BASE}/salary/all`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('emp_token')}` }
             });
             const data = await res.json();
@@ -43,7 +44,7 @@ const SalaryManagement = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('/api/salary', {
+            const res = await fetch(`${API_BASE}/salary`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,7 +71,7 @@ const SalaryManagement = () => {
         if (!confirmGen) return;
 
         try {
-            const res = await fetch('/api/admin/generate-payslips', {
+            const res = await fetch(`${API_BASE}/admin/generate-payslips`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
